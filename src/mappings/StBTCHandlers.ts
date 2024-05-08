@@ -5,9 +5,7 @@
 import assert from "assert";
 import { StakedLog, TransferLog, UnStakedLog, } from "../types/abi-interfaces/StBTC";
 import { BidoRecord } from "../types";
-import { StBTC__factory } from "../types/contracts";
 
-const stBTC_contact = StBTC__factory.connect("", api);
 export async function handleStakedStBTCLog(log: StakedLog): Promise<void> {
   assert(log.args, "No log.args");
   const record = BidoRecord.create({
@@ -20,8 +18,6 @@ export async function handleStakedStBTCLog(log: StakedLog): Promise<void> {
     action: 'stake',
     timestamp: log.block.timestamp,
   })
-  stBTC_contact.balanceOf(log.args.sender, { blockTag: log.blockNumber})
-  // contract call: query some data from contract 
   await record.save()
 }
 
