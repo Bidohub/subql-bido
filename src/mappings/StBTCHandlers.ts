@@ -18,6 +18,7 @@ export async function handleStakedStBTCLog(log: StakedLog): Promise<void> {
     amount: log.args.amount.toBigInt(),
     address: log.args.sender,
     action: 'stake',
+    timestamp: log.block.timestamp,
   })
   stBTC_contact.balanceOf(log.args.sender, { blockTag: log.blockNumber})
   // contract call: query some data from contract 
@@ -36,6 +37,7 @@ export async function handleTransferStBTCLog(log: TransferLog): Promise<void> {
     amount: log.args.value.toBigInt(),
     address: log.args.from,
     action: 'transferOut',
+    timestamp: log.block.timestamp,
   })
   const record_receive = BidoRecord.create({
     id: log.transactionHash,
@@ -44,6 +46,7 @@ export async function handleTransferStBTCLog(log: TransferLog): Promise<void> {
     amount: log.args.value.toBigInt(),
     address: log.args.to,
     action: 'transferIn',
+    timestamp: log.block.timestamp,
   })
   await record_out.save()
   await record_receive.save()
@@ -58,6 +61,7 @@ export async function handleUnStakedStBTCLog(log: UnStakedLog): Promise<void> {
     amount: log.args.amount.toBigInt(),
     address: log.args.sender,
     action: 'unstake',
+    timestamp: log.block.timestamp,
   })
   await record.save()
 }
